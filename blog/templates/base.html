@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <!-- CDN for font awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>{% block head_title %}Saral Gyaan{% endblock head_title %}</title>
+    <link rel='stylesheet' href="{% static 'css/base.css' %}">
+
+    <style>
+    {% block stylesheet %} {% endblock stylesheet %}
+    </style>
+
+    {% block head_extra %} {% endblock head_extra %}
+
+
+</head>
+
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% include 'includes/messages_display.html' %}
+<div class="container-fluid">
+{% block content %}{% endblock content %}
+</div>
+
+<!-- Optional JavaScript -->
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- Using the uncompressed version of jquery  -->
+<script   src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.4.0/marked.js"></script>
+
+<script type="text/javascript">
+    // JS  main function which runs when the page loads
+    $(document).ready(function(){
+
+        // Mark down function- It marks down the content
+        $(".content-markdown").each(function(){ //looks for all the content with class of content-markdown
+            var content = $(this).text() //sets the text to variable content
+            // console.log(content)
+            var markedContent = marked(content) // set the marked text to variable markedContent
+            // console.log(markedContent)
+            $(this).html(markedContent) //changes the html text to the marked content
+            }) // Mark down function ends here
+
+        //Img responsive function- It makes the image responsive
+        //TODO- The image is not responsive for me.
+
+        $(".post-detail-item img").each(function(){ // look up for all the img with the class
+            $(this).addClass("img-responsive"); // add a new class of img-responsive to it.
+            })// Img responsive function ends here
+
+
+        var contentInput = $("#id_content"); //sets the content with id (id_content) to variable
+
+        // set content func- set the preview
+        function setContent(value){
+            var markedContent = marked(value)
+            $("#preview-content").html(markedContent)
+            $("#preview-content img").each(function() {
+                $(this).addClass("img-responsive")
+                // body...
+            })
+        } // set content func ends
+
+        // runs the above function on input content
+        setContent(contentInput.val())
+
+        contentInput.keyup(function(){
+            var newContent = $(this).val()
+            setContent(newContent)
+        })
+
+        var titleInput = $("#id_title"); //sets the title with id (id_title) to variable
+
+        // set title func- set the preview
+        function setTitle(value){
+            $("#preview-title").text(value)
+            }// set content func ends
+
+        // runs the above function on input content
+        setTitle(titleInput.val())
+
+        titleInput.keyup(function(){
+            var newContent = $(this).val()
+            setTitle(newContent)
+        })
+
+        $(".comment-reply-btn").click(function(event){
+        event.preventDefault();
+        // console.log((this).parent().next)
+        $(this).parent().next(".comment-reply").fadeToggle();
+    })
+    }) // JS main function ends here
+</script>
+
+
+</body>
+</html>
